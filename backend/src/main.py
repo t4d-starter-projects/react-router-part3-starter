@@ -7,6 +7,8 @@ from src.endpoints.apis import employee_api as employee_api_module
 from src.endpoints.apis import product_api as product_api_module
 from src.endpoints.apis import supplier_api as supplier_api_module
 from src.endpoints.apis import user_api as user_api_module
+from src.endpoints.apis import color_api as color_api_module
+from src.endpoints.apis import car_api as car_api_module
 
 
 def create_app() -> Flask:
@@ -20,6 +22,8 @@ def create_app() -> Flask:
         product_api_module,
         supplier_api_module,
         user_api_module,
+        color_api_module,
+        car_api_module,
     ])
 
     # creating the Flask application
@@ -35,6 +39,8 @@ def create_app() -> Flask:
     rest_app.register_blueprint(product_api_module.product_api)
     rest_app.register_blueprint(supplier_api_module.supplier_api)
     rest_app.register_blueprint(user_api_module.user_api)
+    rest_app.register_blueprint(color_api_module.color_api)
+    rest_app.register_blueprint(car_api_module.car_api)
 
     return rest_app
 

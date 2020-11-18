@@ -5,42 +5,42 @@ alter table employees
 	add password varchar(255);
 
 alter table categories alter column category_id type integer;
-create sequence categories_category_id_seq owned by northwind.public.categories.category_id;
+create sequence categories_category_id_seq owned by appdb.public.categories.category_id;
 select setval('categories_category_id_seq', COALESCE((select MAX(category_id)+1 from categories), 1), false);
 alter table categories alter column category_id SET default nextval('categories_category_id_seq');
 
 alter table employees alter column employee_id type integer;
-create sequence employees_employee_id_seq owned by northwind.public.employees.employee_id;
+create sequence employees_employee_id_seq owned by appdb.public.employees.employee_id;
 select setval('employees_employee_id_seq', COALESCE((select MAX(employee_id)+1 from employees), 1), false);
 alter table employees alter column employee_id SET default nextval('employees_employee_id_seq');
 
 alter table orders alter column order_id type integer;
-create sequence orders_order_id_seq owned by northwind.public.orders.order_id;
+create sequence orders_order_id_seq owned by appdb.public.orders.order_id;
 select setval('orders_order_id_seq', COALESCE((select MAX(order_id)+1 from orders), 1), false);
 alter table orders alter column order_id SET default nextval('orders_order_id_seq');
 
 alter table products alter column product_id type integer;
-create sequence products_product_id_seq owned by northwind.public.products.product_id;
+create sequence products_product_id_seq owned by appdb.public.products.product_id;
 select setval('products_product_id_seq', COALESCE((select MAX(product_id)+1 from products), 1), false);
 alter table products alter column product_id SET default nextval('products_product_id_seq');
 
 alter table region alter column region_id type integer;
-create sequence region_region_id_seq owned by northwind.public.region.region_id;
+create sequence region_region_id_seq owned by appdb.public.region.region_id;
 select setval('region_region_id_seq', COALESCE((select MAX(region_id)+1 from region), 1), false);
 alter table region alter column region_id SET default nextval('region_region_id_seq');
 
 alter table shippers alter column shipper_id type integer;
-create sequence shippers_shipper_id_seq owned by northwind.public.shippers.shipper_id;
+create sequence shippers_shipper_id_seq owned by appdb.public.shippers.shipper_id;
 select setval('shippers_shipper_id_seq', COALESCE((select MAX(shipper_id)+1 from shippers), 1), false);
 alter table shippers alter column shipper_id SET default nextval('shippers_shipper_id_seq');
 
 alter table suppliers alter column supplier_id type integer;
-create sequence suppliers_supplier_id_seq owned by northwind.public.suppliers.supplier_id;
+create sequence suppliers_supplier_id_seq owned by appdb.public.suppliers.supplier_id;
 select setval('suppliers_supplier_id_seq', COALESCE((select MAX(supplier_id)+1 from suppliers), 1), false);
 alter table suppliers alter column supplier_id SET default nextval('suppliers_supplier_id_seq');
 
 alter table us_states alter column state_id type integer;
-create sequence us_states_state_id_seq owned by northwind.public.us_states.state_id;
+create sequence us_states_state_id_seq owned by appdb.public.us_states.state_id;
 select setval('us_states_state_id_seq', COALESCE((select MAX(state_id)+1 from us_states), 1), false);
 alter table us_states alter column state_id SET default nextval('us_states_state_id_seq');
 
