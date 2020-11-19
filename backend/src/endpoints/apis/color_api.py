@@ -24,7 +24,7 @@ def get_colors(all_colors_task=Provide[Tasks.all_colors]):
     return jsonify(humps.camelize(colors_json))
 
 
-@color_api.route('/categories/<color_id>')
+@color_api.route('/colors/<color_id>')
 @inject
 def one_color(
         color_id: str,
@@ -38,7 +38,7 @@ def one_color(
     return jsonify(humps.camelize(color_result))
 
 
-@color_api.route('/categories', methods=['POST'])
+@color_api.route('/colors', methods=['POST'])
 @inject
 def append_color(append_color_task=Provide[Tasks.append_color]):
     posted_color: ColorSchema = ColorSchema(
@@ -52,7 +52,7 @@ def append_color(append_color_task=Provide[Tasks.append_color]):
     return jsonify(humps.camelize(color_result)), 201
 
 
-@color_api.route('/categories/<color_id>', methods=['PUT'])
+@color_api.route('/colors/<color_id>', methods=['PUT'])
 @inject
 def replace_color(
         color_id: str,
@@ -67,7 +67,7 @@ def replace_color(
     return jsonify(''), 204
 
 
-@color_api.route('/categories/<color_id>', methods=['DELETE'])
+@color_api.route('/colors/<color_id>', methods=['DELETE'])
 @inject
 def remove_color(
         color_id: str,

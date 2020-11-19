@@ -24,7 +24,7 @@ def get_cars(all_cars_task=Provide[Tasks.all_cars]):
     return jsonify(humps.camelize(cars_json))
 
 
-@car_api.route('/categories/<car_id>')
+@car_api.route('/cars/<car_id>')
 @inject
 def one_car(
         car_id: str,
@@ -38,7 +38,7 @@ def one_car(
     return jsonify(humps.camelize(car_result))
 
 
-@car_api.route('/categories', methods=['POST'])
+@car_api.route('/cars', methods=['POST'])
 @inject
 def append_car(append_car_task=Provide[Tasks.append_car]):
     posted_car: CarSchema = CarSchema(
@@ -52,7 +52,7 @@ def append_car(append_car_task=Provide[Tasks.append_car]):
     return jsonify(humps.camelize(car_result)), 201
 
 
-@car_api.route('/categories/<car_id>', methods=['PUT'])
+@car_api.route('/cars/<car_id>', methods=['PUT'])
 @inject
 def replace_car(
         car_id: str,
@@ -67,7 +67,7 @@ def replace_car(
     return jsonify(''), 204
 
 
-@car_api.route('/categories/<car_id>', methods=['DELETE'])
+@car_api.route('/cars/<car_id>', methods=['DELETE'])
 @inject
 def remove_car(
         car_id: str,
