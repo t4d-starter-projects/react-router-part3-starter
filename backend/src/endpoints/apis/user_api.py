@@ -5,6 +5,8 @@ import humps
 from ..json_schemas.user_schema import UserSchema
 from ..json_schemas.login_user_schema import LoginUserSchema
 from ..json_schemas.user_change_password_schema import UserChangePasswordSchema
+from ..json_schemas.user_has_one_or_more_roles_schema import \
+    UserHasOneOrMoreRolesSchema
 from ..security_utils import create_token, check_for_refresh_token, authorize
 
 from src.tasks.tasks_container import Tasks
@@ -55,7 +57,6 @@ def refresh(refresh_user_task=Provide[Tasks.refresh_user]):
 @inject
 def change_password(
         user_change_password_task=Provide[Tasks.user_change_password]):
-    
     user_change_password = UserChangePasswordSchema(
         only=('username', 'user_kind', 'old_password', 'new_password')
     ).load(humps.decamelize(request.get_json()))
@@ -64,3 +65,20 @@ def change_password(
         return jsonify(''), 400
 
     return jsonify(''), 200
+
+
+@user_api.route('/users/has_one_or_more_roles', methods=['POST'])
+@authorize(['user'])
+@inject
+def has_one_or_more_roles(
+        user_has_one_or_more_roles_task=Provide[
+            Tasks.user_has_one_or_more_roles]
+):
+    user_has_one_or_more_roles = UserHasOneOrMoreRolesSchema(
+        only=(['roles'])
+    ).load(humps.decamelize(request.get_json()))
+
+    return jsonify(humps.camelize({
+        'has_role': user_has_one_or_more_roles_task.run(
+            request.token_data['username'], user_has_one_or_more_roles[
+                                                   'roles'])})), 200

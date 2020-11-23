@@ -40,8 +40,10 @@ class Employees(Entities):
 
         return roles
 
-    def update_password(self, username: str, hashed_password: str) -> None:
+    def has_one_or_more_roles(self, username: str, roles: List[str]) -> bool:
+        return len([r for r in self.roles(username) if r in roles]) > 0
 
+    def update_password(self, username: str, hashed_password: str) -> None:
         session = self.Session()
         session.query(Employee).filter(Employee.username == username).update({
             "password": hashed_password

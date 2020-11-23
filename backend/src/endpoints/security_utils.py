@@ -5,6 +5,7 @@ import datetime
 
 authorization_header_prefix = 'Bearer '
 authorization_header_prefix_len = len(authorization_header_prefix)
+www_auth_header = {'WWW-Authenticate':'Token realm="Backend", charset="UTF-8"'}
 
 
 def get_token_data(token):
@@ -17,26 +18,25 @@ def authorize(roles=[]):
         def wrapped(*args, **kwargs) -> object:
             authorization_header = request.headers.get('Authorization')
             if not authorization_header:
-                return jsonify({'message': 'Missing authorization header'}), 400
+                return 'Missing authorization header', 400
 
             token = authorization_header[authorization_header_prefix_len:]
             if not token:
-                return jsonify({'message': 'Missing authorization token'}), 400
+                return 'Malformed authorization header', 400
             try:
                 token_data = get_token_data(token)
 
                 if not token_data['is_access']:
-                    return jsonify(
-                        {'message': 'Token is not an access token'}), 400
+                    return 'Incorrect authorization token sent', 400
 
                 token_roles = set(token_data['roles']);
                 authorize_roles = set(roles)
                 if len(token_roles.intersection(authorize_roles)) == 0:
-                    return jsonify({'message': 'Not authorized'}), 400
+                    return 'Not authorized', 403
 
-                current_app.token_data = token_data
+                request.token_data = token_data
             except:
-                return jsonify({'message': 'Invalid authorization token.'}), 404
+                return 'Invalid authorization token', 401, www_auth_header
 
             return func(*args, **kwargs)
         return wrapped
@@ -48,25 +48,25 @@ def check_for_refresh_token(func):
     def wrapped(*args, **kwargs) -> object:
         authorization_header = request.headers.get('Authorization')
         if not authorization_header:
-            return jsonify({'message': 'Missing authorization header'}), 400
+            return 'Missing authorization header', 400
 
         token = authorization_header[authorization_header_prefix_len:]
         if not token:
-            return jsonify({'message': 'Missing authorization token'}), 400
+            return 'Malformed authorization header', 400
         try:
             token_data = get_token_data(token)
             if not token_data['is_refresh']:
-                return jsonify({'message': 'Token is not a refresh token'}), 400
+                return 'Incorrect authorization token sent', 400
             request.token_data = token_data
         except:
-            return jsonify({'message': 'Invalid authorization token.'}), 404
+            return 'Invalid authorization token', 401, www_auth_header
 
         return func(*args, **kwargs)
 
     return wrapped
 
 
-def create_token(user, is_access=True, ttl_minutes=1):
+def create_token(user, is_access=True, ttl_minutes=15):
     token = jwt.encode({
         'username': user['username'],
         'display_name': user['display_name'],

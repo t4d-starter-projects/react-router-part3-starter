@@ -9,6 +9,8 @@ from .services.employees import Employees
 from .entities.category import Category
 from .entities.product import Product
 from .entities.supplier import Supplier
+from .entities.car import Car
+from .entities.color import Color
 
 
 class Adapters(containers.DeclarativeContainer):
@@ -63,4 +65,20 @@ class Adapters(containers.DeclarativeContainer):
         data_session=data_session,
         model=Product,
         model_key_field='product_id'
+    )
+
+    cars = providers.Singleton(
+        Entities,
+        logging=logging,
+        data_session=data_session,
+        model=Car,
+        model_key_field='car_id'
+    )
+
+    colors = providers.Singleton(
+        Entities,
+        logging=logging,
+        data_session=data_session,
+        model=Color,
+        model_key_field='color_id'
     )
