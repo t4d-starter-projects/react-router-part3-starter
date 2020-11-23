@@ -7,7 +7,7 @@ from ..json_schemas.login_user_schema import LoginUserSchema
 from ..json_schemas.user_change_password_schema import UserChangePasswordSchema
 from ..json_schemas.user_has_one_or_more_roles_schema import \
     UserHasOneOrMoreRolesSchema
-from ..security_utils import create_token, check_for_refresh_token, authorize
+from ..security_utils import create_token, check_for_refresh_token, authorize, www_auth_header
 
 from src.tasks.tasks_container import Tasks
 
@@ -23,7 +23,7 @@ def login(login_task=Provide[Tasks.login_user]):
     user = login_task.run(login_user)
 
     if user is None:
-        return jsonify(''), 404
+        return 'User not found', 404
 
     user_schema = UserSchema(many=False)
     user_result = user_schema.dump(user)
@@ -42,7 +42,7 @@ def login(login_task=Provide[Tasks.login_user]):
 @inject
 def refresh(refresh_user_task=Provide[Tasks.refresh_user]):
     if not refresh_user_task.run(request.token_data):
-        return jsonify(''), 404
+        return 'Invalid authorization token', 401, www_auth_header
 
     refreshed_user = {
         'access_token': create_token(request.token_data),
@@ -62,9 +62,9 @@ def change_password(
     ).load(humps.decamelize(request.get_json()))
 
     if not user_change_password_task.run(user_change_password):
-        return jsonify(''), 400
+        return 'Password not changed', 400
 
-    return jsonify(''), 200
+    return '', 200
 
 
 @user_api.route('/users/has_one_or_more_roles', methods=['POST'])
