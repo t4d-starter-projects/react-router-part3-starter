@@ -5,7 +5,8 @@ import datetime
 
 authorization_header_prefix = 'Bearer '
 authorization_header_prefix_len = len(authorization_header_prefix)
-www_auth_header = {'WWW-Authenticate':'Token realm="Backend", charset="UTF-8"'}
+www_auth_header = {
+    'WWW-Authenticate': 'Token realm="Backend", charset="UTF-8"'}
 
 
 def get_token_data(token):
@@ -29,7 +30,7 @@ def authorize(roles=[]):
                 if not token_data['is_access']:
                     return 'Incorrect authorization token sent', 400
 
-                token_roles = set(token_data['roles']);
+                token_roles = set(token_data['roles'])
                 authorize_roles = set(roles)
                 if len(token_roles.intersection(authorize_roles)) == 0:
                     return 'Not authorized', 403
