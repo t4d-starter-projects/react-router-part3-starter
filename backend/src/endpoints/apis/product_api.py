@@ -47,7 +47,7 @@ def one_product(
 def append_product(append_product_task=Provide[Tasks.append_product]):
     posted_product: ProductSchema = ProductSchema(
         only=new_product_fields
-    ).load(request.get_json())
+    ).load(humps.decamelize(request.get_json()))
 
     product = append_product_task.run(posted_product)
 
@@ -62,7 +62,7 @@ def append_product(append_product_task=Provide[Tasks.append_product]):
 def replace_product(
         product_id: str,
         replace_product_task=Provide[Tasks.replace_product]):
-    product = ProductSchema().load(request.get_json())
+    product = ProductSchema().load(humps.decamelize(request.get_json()))
 
     if product['product_id'] != int(product_id):
         return jsonify(''), 400

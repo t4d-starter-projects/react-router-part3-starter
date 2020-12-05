@@ -46,7 +46,7 @@ def one_category(
 def append_category(append_category_task=Provide[Tasks.append_category]):
     posted_category: CategorySchema = CategorySchema(
         only=new_category_fields
-    ).load(request.get_json())
+    ).load(humps.decamelize(request.get_json()))
 
     category = append_category_task.run(posted_category)
 
@@ -61,7 +61,7 @@ def append_category(append_category_task=Provide[Tasks.append_category]):
 def replace_category(
         category_id: str,
         replace_category_task=Provide[Tasks.replace_category]):
-    category = CategorySchema().load(request.get_json())
+    category = CategorySchema().load(humps.decamelize(request.get_json()))
 
     if category['category_id'] != int(category_id):
         return jsonify(''), 400

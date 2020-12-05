@@ -43,7 +43,7 @@ def one_color(
 def append_color(append_color_task=Provide[Tasks.append_color]):
     posted_color: ColorSchema = ColorSchema(
         only=new_color_fields
-    ).load(request.get_json())
+    ).load(humps.decamelize(request.get_json()))
 
     color = append_color_task.run(posted_color)
 
@@ -57,7 +57,7 @@ def append_color(append_color_task=Provide[Tasks.append_color]):
 def replace_color(
         color_id: str,
         replace_color_task=Provide[Tasks.replace_color]):
-    color = ColorSchema().load(request.get_json())
+    color = ColorSchema().load(humps.decamelize(request.get_json()))
 
     if color['color_id'] != int(color_id):
         return jsonify(''), 400

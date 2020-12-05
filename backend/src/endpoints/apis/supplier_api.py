@@ -48,7 +48,7 @@ def one_supplier(
 def append_supplier(append_supplier_task=Provide[Tasks.append_supplier]):
     posted_supplier: SupplierSchema = SupplierSchema(
         only=new_supplier_fields
-    ).load(request.get_json())
+    ).load(humps.decamelize(request.get_json()))
 
     supplier = append_supplier_task.run(posted_supplier)
 
@@ -63,7 +63,7 @@ def append_supplier(append_supplier_task=Provide[Tasks.append_supplier]):
 def replace_supplier(
         supplier_id: str,
         replace_supplier_task=Provide[Tasks.replace_supplier]):
-    supplier = SupplierSchema().load(request.get_json())
+    supplier = SupplierSchema().load(humps.decamelize(request.get_json()))
 
     if supplier['supplier_id'] != int(supplier_id):
         return jsonify(''), 400

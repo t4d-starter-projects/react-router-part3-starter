@@ -47,7 +47,7 @@ def one_employee(
 def append_employee(append_employee_task=Provide[Tasks.append_employee]):
     posted_employee: EmployeeSchema = EmployeeSchema(
         only=new_employee_fields
-    ).load(request.get_json())
+    ).load(humps.decamelize(request.get_json()))
 
     employee = append_employee_task.run(posted_employee)
 
@@ -62,7 +62,7 @@ def append_employee(append_employee_task=Provide[Tasks.append_employee]):
 def replace_employee(
         employee_id: str,
         replace_employee_task=Provide[Tasks.replace_employee]):
-    employee = EmployeeSchema().load(request.get_json())
+    employee = EmployeeSchema().load(humps.decamelize(request.get_json()))
 
     if employee['employee_id'] != int(employee_id):
         return jsonify(''), 400

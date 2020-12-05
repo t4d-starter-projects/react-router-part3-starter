@@ -43,7 +43,7 @@ def one_car(
 def append_car(append_car_task=Provide[Tasks.append_car]):
     posted_car: CarSchema = CarSchema(
         only=new_car_fields
-    ).load(request.get_json())
+    ).load(humps.decamelize(request.get_json()))
 
     car = append_car_task.run(posted_car)
 
@@ -57,7 +57,7 @@ def append_car(append_car_task=Provide[Tasks.append_car]):
 def replace_car(
         car_id: str,
         replace_car_task=Provide[Tasks.replace_car]):
-    car = CarSchema().load(request.get_json())
+    car = CarSchema().load(humps.decamelize(request.get_json()))
 
     if car['car_id'] != int(car_id):
         return jsonify(''), 400

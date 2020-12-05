@@ -18,7 +18,7 @@ user_api = Blueprint('user_api', __name__)
 @inject
 def login(login_task=Provide[Tasks.login_user]):
     login_user = LoginUserSchema(only=('username', 'password', 'kind')).load(
-        request.get_json())
+        humps.decamelize(request.get_json()))
 
     user = login_task.run(login_user)
 
