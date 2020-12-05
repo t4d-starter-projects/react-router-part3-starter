@@ -2,7 +2,7 @@ from marshmallow import Schema, fields
 
 
 class EmployeeSchema(Schema):
-    employee_id = fields.Number()
+    employee_id = fields.Integer()
     last_name = fields.Str()
     first_name = fields.Str()
     title = fields.Str()
@@ -17,6 +17,6 @@ class EmployeeSchema(Schema):
     home_phone = fields.Str()
     extension = fields.Str()
     notes = fields.Str()
-    reports_to = fields.Number()
+    reports_to = fields.Integer()
     username = fields.Str()
     password = fields.Str()

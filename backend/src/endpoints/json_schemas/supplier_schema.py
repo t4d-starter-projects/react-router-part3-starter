@@ -2,7 +2,7 @@ from marshmallow import Schema, fields
 
 
 class SupplierSchema(Schema):
-    supplier_id = fields.Number()
+    supplier_id = fields.Integer()
     company_name = fields.Str()
     contact_name = fields.Str()
     contact_title = fields.Str()
