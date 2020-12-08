@@ -67,7 +67,7 @@ def check_for_refresh_token(func):
     return wrapped
 
 
-def create_token(user, is_access=True, ttl_minutes=15):
+def create_token(user, is_access=True, ttl_minutes=2):
     token = jwt.encode({
         'username': user['username'],
         'display_name': user['display_name'],
