@@ -2,9 +2,34 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import { useQueryParams } from '../hooks/useQueryParams';
+
+function sortCars(cars, sortCol) {
+
+  const sortedCars = [...cars];
+
+  return sortedCars.sort((carA, carB) => {
+
+    if (carA[sortCol] < carB[sortCol]) {
+      return -1;
+    } else if (carA[sortCol] > carB[sortCol]) {
+      return 1;
+    } else {
+      return 0;
+    }
+
+  });
+
+
+}
+
 export function Cars() {
 
   const [cars, setCars] = useState([]);
+
+  const queryParams = useQueryParams();
+
+  const sortCol = queryParams.get('sort') ?? 'make';
 
   useEffect(() => {
 
@@ -20,14 +45,14 @@ export function Cars() {
       <table>
         <thead>
           <tr>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Year</th>
+            <th><Link to="?sort=make">Make</Link></th>
+            <th><Link to="?sort=model">Model</Link></th>
+            <th><Link to="?sort=year">Year</Link></th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {cars.map(car => <tr key={car.carId}>
+          {sortCars(cars, sortCol).map(car => <tr key={car.carId}>
             <td>{car.make}</td>
             <td>{car.model}</td>
             <td>{car.year}</td>

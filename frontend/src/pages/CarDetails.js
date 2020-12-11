@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 export function CarDetails() {
 
   const { carId } = useParams();
+
+  const history = useHistory();
+
+  const navToCars = () => {
+    history.push('/cars');
+  };
 
   const [car, setCar] = useState([]);
 
@@ -28,6 +34,7 @@ export function CarDetails() {
         <li>Price: {car.price}</li>
       </ul>
       <Link to="/cars">Return to Cars Table</Link>
+      <button type="button" onClick={navToCars}>Go to Cars</button>
     </div>
   );
 
