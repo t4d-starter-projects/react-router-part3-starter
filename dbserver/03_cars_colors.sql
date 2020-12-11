@@ -16,9 +16,9 @@ alter table cars
 		primary key (car_id);
 
 insert into cars (make, model, year, color, price)
-values('Ford','Fusion Hybrid', 2019, 'blue', 45000);
+values('Ford','Fusion Hybrid', 2020, 'red', 45000);
 insert into cars (make, model, year, color, price)
-values('Tesla','S', 2020, 'red', 120000);
+values('Tesla','S', 2019, 'blue', 120000);
 
 create table colors
 (
